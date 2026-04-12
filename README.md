@@ -96,18 +96,19 @@ The Vite dev server proxies `/api` requests to the backend automatically (see [v
 
 ```
 house_finances/
-├── backend/               # ASP.NET Core Web API (.NET 8)
-│   ├── Controllers/       # REST endpoints
-│   ├── Data/              # EF Core DbContext
-│   ├── DTOs/              # Request / response models
-│   ├── Migrations/        # EF Core migrations
-│   ├── Models/            # Domain entities
-│   └── Dockerfile
-├── frontend/              # React + Vite + TypeScript + Tailwind
-│   ├── src/
-│   └── Dockerfile
-├── docker-compose.yml     # Orchestrates db · backend · frontend
-├── dev.sh                 # Convenience wrapper: docker compose up --build
+├── apps/
+│   ├── backend/                     # .NET 8 Backend based on Clean Architecture & DDD
+│   │   ├── HouseFinances.Api/       # ASP.NET Core Web API (Presentation Layer)
+│   │   ├── HouseFinances.Application/ # Use cases, DTOs, and Interfaces (Application Layer)
+│   │   ├── HouseFinances.Domain/    # Entities, Enums, and Exceptions (Domain Layer)
+│   │   └── HouseFinances.Infrastructure/ # EF Core, db implementations (Infrastructure Layer)
+│   └── frontend/                    # React + Vite + TypeScript + Tailwind
+│       ├── src/
+│       └── Dockerfile
+├── infra/
+│   └── docker/
+│       └── docker-compose.yml       # Orchestrates db · backend · frontend
+├── dev.sh                           # Convenience wrapper
 └── house_finances.sln
 ```
 
@@ -209,18 +210,19 @@ O servidor dev do Vite redireciona automaticamente as requisições `/api` para 
 
 ```text
 house_finances/
-├── backend/               # ASP.NET Core Web API (.NET 8)
-│   ├── Controllers/       # Endpoints REST
-│   ├── Data/              # DbContext do EF Core
-│   ├── DTOs/              # Modelos de requisição / resposta
-│   ├── Migrations/        # Migrações do EF Core
-│   ├── Models/            # Entidades de domínio
-│   └── Dockerfile
-├── frontend/              # React + Vite + TypeScript + Tailwind
-│   ├── src/
-│   └── Dockerfile
-├── docker-compose.yml     # Orquestra db · backend · frontend
-├── dev.sh                 # Wrapper de conveniência: docker compose up --build
+├── apps/
+│   ├── backend/                     # Backend .NET 8 baseado em Clean Architecture e DDD
+│   │   ├── HouseFinances.Api/       # ASP.NET Core Web API (Camada de Apresentação)
+│   │   ├── HouseFinances.Application/ # Casos de uso, DTOs e Interfaces (Camada de Aplicação)
+│   │   ├── HouseFinances.Domain/    # Entidades, Enums e Exceções (Camada de Domínio)
+│   │   └── HouseFinances.Infrastructure/ # EF Core, banco de dados (Camada de Infraestrutura)
+│   └── frontend/                    # React + Vite + TypeScript + Tailwind
+│       ├── src/
+│       └── Dockerfile
+├── infra/
+│   └── docker/
+│       └── docker-compose.yml       # Orquestra db · backend · frontend
+├── dev.sh                           # Wrapper de conveniência
 └── house_finances.sln
 ```
 </details>
