@@ -1,0 +1,102 @@
+# ============================================================
+# .NET / ASP.NET Core
+# ============================================================
+backend/bin/
+backend/obj/
+backend/publish/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# User-specific secrets (dotnet user-secrets)
+backend/*/secrets.json
+**/secrets.json
+
+# ASP.NET Core Data Protection keys
+**/DataProtection-Keys/
+
+# ============================================================
+# Database files
+# ============================================================
+# Case-insensitive catch for SQLite leftovers
+backend/[Dd]ata/*.db
+backend/[Dd]ata/*.db-shm
+backend/[Dd]ata/*.db-wal
+*.db
+*.db-shm
+*.db-wal
+
+# ============================================================
+# Sensitive configuration — never commit real secrets
+# ============================================================
+# Override files that may hold real connection strings / API keys
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# .env files (docker-compose overrides, local tooling, etc.)
+.env
+.env.*
+!.env.example
+
+# Certificates and private keys
+*.pfx
+*.p12
+*.pem
+*.key
+*.crt
+*.cer
+
+# ============================================================
+# Node / Frontend
+# ============================================================
+node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Vite cache
+frontend/.vite/
+
+# ============================================================
+# Docker
+# ============================================================
+# Local compose overrides (often contain dev credentials)
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ============================================================
+# OS / Editor
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# JetBrains IDEs
+.idea/
+
+# VS Code workspace settings (keep .vscode/extensions.json if desired)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# ============================================================
+# Misc
+# ============================================================
+# NuGet
+*.nupkg
+*.snupkg
+nuget.config.local
+
+# Coverage / test output
+coverage/
+TestResults/
