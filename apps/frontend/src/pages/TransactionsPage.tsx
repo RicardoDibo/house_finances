@@ -28,7 +28,7 @@ export default function TransactionsPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const selectedType = parseInt(form.type);
+  const selectedType = Number.parseInt(form.type);
   const compatibleCategories = categories.filter(
     c => c.purpose === 2 || c.purpose === selectedType
   );
@@ -40,9 +40,9 @@ export default function TransactionsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    const amount = parseFloat(form.amount);
+    const amount = Number.parseFloat(form.amount);
     if (!form.description.trim()) return setError('Descrição é obrigatória.');
-    if (isNaN(amount) || amount <= 0) return setError('Valor deve ser positivo.');
+    if (Number.isNaN(amount) || amount <= 0) return setError('Valor deve ser positivo.');
     if (!form.personId) return setError('Selecione uma pessoa.');
     if (!form.categoryId) return setError('Selecione uma categoria.');
 
@@ -72,8 +72,9 @@ export default function TransactionsPage() {
         <h2 className="text-base font-semibold text-gray-700 mb-4">Nova Transação</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="flex flex-col gap-1 lg:col-span-2">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Descrição</label>
+            <label htmlFor="tx-description" className="text-xs font-medium text-gray-500 uppercase tracking-wide">Descrição</label>
             <input
+              id="tx-description"
               className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Descrição da transação"
               maxLength={400}
@@ -83,8 +84,9 @@ export default function TransactionsPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Valor (R$)</label>
+            <label htmlFor="tx-amount" className="text-xs font-medium text-gray-500 uppercase tracking-wide">Valor (R$)</label>
             <input
+              id="tx-amount"
               type="number" min="0.01" step="0.01"
               className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="0,00"
@@ -94,8 +96,9 @@ export default function TransactionsPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Tipo</label>
+            <label htmlFor="tx-type" className="text-xs font-medium text-gray-500 uppercase tracking-wide">Tipo</label>
             <select
+              id="tx-type"
               className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={form.type}
               onChange={e => handleTypeChange(e.target.value)}
@@ -107,8 +110,9 @@ export default function TransactionsPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Categoria</label>
+            <label htmlFor="tx-category" className="text-xs font-medium text-gray-500 uppercase tracking-wide">Categoria</label>
             <select
+              id="tx-category"
               className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={form.categoryId}
               onChange={e => setForm(f => ({ ...f, categoryId: e.target.value }))}
@@ -121,8 +125,9 @@ export default function TransactionsPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Pessoa</label>
+            <label htmlFor="tx-person" className="text-xs font-medium text-gray-500 uppercase tracking-wide">Pessoa</label>
             <select
+              id="tx-person"
               className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={form.personId}
               onChange={e => setForm(f => ({ ...f, personId: e.target.value }))}
