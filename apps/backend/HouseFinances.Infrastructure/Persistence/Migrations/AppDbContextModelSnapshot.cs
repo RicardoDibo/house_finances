@@ -83,13 +83,49 @@ namespace HouseFinances.Infrastructure.Persistence.Migrations
                 b.Property<int>("Type")
                     .HasColumnType("integer");
 
+                b.Property<Guid?>("UserId")
+                    .HasColumnType("uuid");
+
                 b.HasKey("Id");
 
                 b.HasIndex("CategoryId");
 
                 b.HasIndex("PersonId");
 
+                b.HasIndex("UserId");
+
                 b.ToTable("Transactions");
+            });
+
+            modelBuilder.Entity("HouseFinances.Domain.Entities.User", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
+
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnType("character varying(200)");
+
+                b.Property<string>("PasswordHash")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<int>("Role")
+                    .HasColumnType("integer");
+
+                b.HasKey("Id");
+
+                b.HasIndex("Email")
+                    .IsUnique();
+
+                b.ToTable("Users");
             });
 
             modelBuilder.Entity("HouseFinances.Domain.Entities.Transaction", b =>
@@ -106,9 +142,16 @@ namespace HouseFinances.Infrastructure.Persistence.Migrations
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
 
+                b.HasOne("HouseFinances.Domain.Entities.User", "User")
+                    .WithMany("Transactions")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
                 b.Navigation("Category");
 
                 b.Navigation("Person");
+
+                b.Navigation("User");
             });
 
             modelBuilder.Entity("HouseFinances.Domain.Entities.Category", b =>
@@ -117,6 +160,11 @@ namespace HouseFinances.Infrastructure.Persistence.Migrations
             });
 
             modelBuilder.Entity("HouseFinances.Domain.Entities.Person", b =>
+            {
+                b.Navigation("Transactions");
+            });
+
+            modelBuilder.Entity("HouseFinances.Domain.Entities.User", b =>
             {
                 b.Navigation("Transactions");
             });

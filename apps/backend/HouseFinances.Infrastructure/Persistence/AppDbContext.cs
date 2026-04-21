@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Person> Persons => Set<Person>();
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +24,14 @@ public class AppDbContext : DbContext
         {
             b.HasKey(c => c.Id);
             b.Property(c => c.Description).IsRequired().HasMaxLength(400);
+        });
+
+        modelBuilder.Entity<User>(b =>
+        {
+            b.HasKey(u => u.Id);
+            b.Property(u => u.Name).IsRequired().HasMaxLength(200);
+            b.Property(u => u.Email).IsRequired().HasMaxLength(256);
+            b.HasIndex(u => u.Email).IsUnique();
         });
 
         modelBuilder.Entity<Transaction>(b =>
@@ -39,6 +48,12 @@ public class AppDbContext : DbContext
                 .WithMany(c => c.Transactions)
                 .HasForeignKey(t => t.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(t => t.User)
+                .WithMany(u => u.Transactions)
+                .HasForeignKey(t => t.UserId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }
