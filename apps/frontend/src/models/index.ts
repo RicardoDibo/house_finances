@@ -21,6 +21,7 @@ export interface Transaction {
   categoryDescription: string;
   personId: string;
   personName: string;
+  userId: string | null;
 }
 
 export interface PersonTotals {
@@ -51,4 +52,19 @@ export interface CategoryTotalsSummary {
   totalIncome: number;
   totalExpenses: number;
   balance: number;
+}
+
+export type UserRole = 'Admin' | 'User';
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  role: number;
+  roleName: UserRole;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: AuthUser;
 }
