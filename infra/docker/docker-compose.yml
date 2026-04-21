@@ -28,6 +28,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000
       - ConnectionStrings__DefaultConnection=Host=db;Database=house_finances;Username=hfuser;Password=hfpassword
+      - Jwt__Key=HouseFinancesDefaultSecretKey!ChangeInProduction2025
+      - Jwt__Issuer=HouseFinances
+      - Jwt__Audience=HouseFinancesUsers
     restart: unless-stopped
 
   frontend:

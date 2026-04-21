@@ -100,3 +100,6 @@ nuget.config.local
 # Coverage / test output
 coverage/
 TestResults/
+
+# Copilot
+.github/
