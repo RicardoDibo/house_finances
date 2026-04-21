@@ -9,9 +9,9 @@ public class TotalsService : ITotalsService
 
     public TotalsService(ITotalsRepository repository) => _repository = repository;
 
-    public async Task<PersonTotalsSummaryDto> GetPersonTotalsAsync()
+    public async Task<PersonTotalsSummaryDto> GetPersonTotalsAsync(Guid? userId = null)
     {
-        var persons = await _repository.GetPersonsWithTransactionsAsync();
+        var persons = await _repository.GetPersonsWithTransactionsAsync(userId);
 
         var rows = persons.Select(p => new PersonTotalsDto(
             p.Id,
@@ -29,9 +29,9 @@ public class TotalsService : ITotalsService
             rows.Sum(r => r.Balance));
     }
 
-    public async Task<CategoryTotalsSummaryDto> GetCategoryTotalsAsync()
+    public async Task<CategoryTotalsSummaryDto> GetCategoryTotalsAsync(Guid? userId = null)
     {
-        var categories = await _repository.GetCategoriesWithTransactionsAsync();
+        var categories = await _repository.GetCategoriesWithTransactionsAsync(userId);
 
         var rows = categories.Select(c => new CategoryTotalsDto(
             c.Id,

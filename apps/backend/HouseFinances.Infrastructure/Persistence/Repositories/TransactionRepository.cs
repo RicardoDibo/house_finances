@@ -10,11 +10,18 @@ public class TransactionRepository : ITransactionRepository
 
     public TransactionRepository(AppDbContext context) => _context = context;
 
-    public async Task<IReadOnlyList<Transaction>> GetAllWithDetailsAsync() =>
-        await _context.Transactions
+    public async Task<IReadOnlyList<Transaction>> GetAllWithDetailsAsync(Guid? userId = null)
+    {
+        var query = _context.Transactions
             .Include(t => t.Category)
             .Include(t => t.Person)
-            .ToListAsync();
+            .AsQueryable();
+
+        if (userId.HasValue)
+            query = query.Where(t => t.UserId == userId.Value);
+
+        return await query.ToListAsync();
+    }
 
     public void Add(Transaction transaction) => _context.Transactions.Add(transaction);
 

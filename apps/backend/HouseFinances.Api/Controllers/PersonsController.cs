@@ -1,10 +1,12 @@
 using HouseFinances.Application.Persons;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseFinances.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PersonsController : ControllerBase
 {
     private readonly IPersonService _service;
@@ -22,6 +24,7 @@ public class PersonsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreatePersonCommand command)
     {
         var person = await _service.CreateAsync(command);
@@ -29,10 +32,12 @@ public class PersonsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePersonCommand command) =>
         Ok(await _service.UpdateAsync(id, command));
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _service.DeleteAsync(id);

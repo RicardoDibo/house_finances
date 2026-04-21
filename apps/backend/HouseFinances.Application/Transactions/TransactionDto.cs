@@ -9,11 +9,13 @@ public record TransactionDto(
     Guid CategoryId,
     string CategoryDescription,
     Guid PersonId,
-    string PersonName);
+    string PersonName,
+    Guid? UserId);
 
 public record CreateTransactionCommand(
     string Description,
     decimal Amount,
     int Type,
     Guid CategoryId,
-    Guid PersonId);
+    Guid PersonId,
+    Guid? UserId = null);

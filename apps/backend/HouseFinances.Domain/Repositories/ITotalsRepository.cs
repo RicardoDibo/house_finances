@@ -4,6 +4,6 @@ namespace HouseFinances.Domain.Repositories;
 
 public interface ITotalsRepository
 {
-    Task<IReadOnlyList<Person>> GetPersonsWithTransactionsAsync();
-    Task<IReadOnlyList<Category>> GetCategoriesWithTransactionsAsync();
+    Task<IReadOnlyList<Person>> GetPersonsWithTransactionsAsync(Guid? userId = null);
+    Task<IReadOnlyList<Category>> GetCategoriesWithTransactionsAsync(Guid? userId = null);
 }

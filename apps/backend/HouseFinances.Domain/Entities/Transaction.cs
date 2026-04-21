@@ -13,6 +13,8 @@ public class Transaction
     public Category Category { get; protected set; } = null!;
     public Guid PersonId { get; protected set; }
     public Person Person { get; protected set; } = null!;
+    public Guid? UserId { get; protected set; }
+    public User? User { get; protected set; }
 
     protected Transaction() { }
 
@@ -21,7 +23,8 @@ public class Transaction
         decimal amount,
         TransactionType type,
         Person person,
-        Category category)
+        Category category,
+        Guid? userId = null)
     {
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("Description is required.");
@@ -30,7 +33,6 @@ public class Transaction
         if (amount <= 0)
             throw new DomainException("Amount must be a positive value.");
 
-        // Domain rules enforced here
         if (person.IsMinor && type == TransactionType.Income)
             throw new DomainException("Minors (under 18) can only register expense transactions.");
 
@@ -47,7 +49,8 @@ public class Transaction
             PersonId = person.Id,
             Person = person,
             CategoryId = category.Id,
-            Category = category
+            Category = category,
+            UserId = userId
         };
     }
 }

@@ -10,9 +10,23 @@ public class TotalsRepository : ITotalsRepository
 
     public TotalsRepository(AppDbContext context) => _context = context;
 
-    public async Task<IReadOnlyList<Person>> GetPersonsWithTransactionsAsync() =>
-        await _context.Persons.Include(p => p.Transactions).ToListAsync();
+    public async Task<IReadOnlyList<Person>> GetPersonsWithTransactionsAsync(Guid? userId = null)
+    {
+        if (userId.HasValue)
+            return await _context.Persons
+                .Include(p => p.Transactions.Where(t => t.UserId == userId.Value))
+                .ToListAsync();
 
-    public async Task<IReadOnlyList<Category>> GetCategoriesWithTransactionsAsync() =>
-        await _context.Categories.Include(c => c.Transactions).ToListAsync();
+        return await _context.Persons.Include(p => p.Transactions).ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<Category>> GetCategoriesWithTransactionsAsync(Guid? userId = null)
+    {
+        if (userId.HasValue)
+            return await _context.Categories
+                .Include(c => c.Transactions.Where(t => t.UserId == userId.Value))
+                .ToListAsync();
+
+        return await _context.Categories.Include(c => c.Transactions).ToListAsync();
+    }
 }

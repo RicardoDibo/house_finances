@@ -2,6 +2,6 @@ namespace HouseFinances.Application.Totals;
 
 public interface ITotalsService
 {
-    Task<PersonTotalsSummaryDto> GetPersonTotalsAsync();
-    Task<CategoryTotalsSummaryDto> GetCategoryTotalsAsync();
+    Task<PersonTotalsSummaryDto> GetPersonTotalsAsync(Guid? userId = null);
+    Task<CategoryTotalsSummaryDto> GetCategoryTotalsAsync(Guid? userId = null);
 }

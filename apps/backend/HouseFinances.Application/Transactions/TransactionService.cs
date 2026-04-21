@@ -21,9 +21,9 @@ public class TransactionService : ITransactionService
         _categories = categories;
     }
 
-    public async Task<IReadOnlyList<TransactionDto>> GetAllAsync()
+    public async Task<IReadOnlyList<TransactionDto>> GetAllAsync(Guid? userId = null)
     {
-        var list = await _transactions.GetAllWithDetailsAsync();
+        var list = await _transactions.GetAllWithDetailsAsync(userId);
         return list.Select(ToDto).ToList();
     }
 
@@ -38,7 +38,7 @@ public class TransactionService : ITransactionService
             ?? throw new KeyNotFoundException("Category not found.");
 
         var type = (TransactionType)command.Type;
-        var transaction = Transaction.Create(command.Description, command.Amount, type, person, category);
+        var transaction = Transaction.Create(command.Description, command.Amount, type, person, category, command.UserId);
 
         _transactions.Add(transaction);
         await _transactions.SaveChangesAsync();
@@ -49,5 +49,6 @@ public class TransactionService : ITransactionService
         t.Id, t.Description, t.Amount,
         (int)t.Type, t.Type.ToString(),
         t.CategoryId, t.Category.Description,
-        t.PersonId, t.Person.Name);
+        t.PersonId, t.Person.Name,
+        t.UserId);
 }
