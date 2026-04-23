@@ -3,7 +3,6 @@ import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
-import PersonsPage from './pages/PersonsPage';
 import CategoriesPage from './pages/CategoriesPage';
 import TransactionsPage from './pages/TransactionsPage';
 import TotalsPage from './pages/TotalsPage';
@@ -25,7 +24,6 @@ export default function App() {
 
               {/* Admin-only routes */}
               <Route element={<ProtectedRoute requireAdmin />}>
-                <Route path="persons" element={<PersonsPage />} />
                 <Route path="categories" element={<CategoriesPage />} />
                 <Route path="users" element={<RegisterUserPage />} />
               </Route>
