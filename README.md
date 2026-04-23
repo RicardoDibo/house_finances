@@ -97,12 +97,12 @@ The Vite dev server proxies `/api` requests to the backend automatically (see [v
 ```
 house_finances/
 ├── apps/
-│   ├── backend/                     # .NET 8 Backend based on Clean Architecture & DDD
-│   │   ├── HouseFinances.Api/       # ASP.NET Core Web API (Presentation Layer)
-│   │   ├── HouseFinances.Application/ # Use cases, DTOs, and Interfaces (Application Layer)
-│   │   ├── HouseFinances.Domain/    # Entities, Enums, and Exceptions (Domain Layer)
+│   ├── backend/                          # .NET 8 Backend based on Clean Architecture & DDD
+│   │   ├── HouseFinances.Api/            # ASP.NET Core Web API (Presentation Layer)
+│   │   ├── HouseFinances.Application/    # Use cases, DTOs, and Interfaces (Application Layer)
+│   │   ├── HouseFinances.Domain/         # Entities, Enums, and Exceptions (Domain Layer)
 │   │   └── HouseFinances.Infrastructure/ # EF Core, db implementations (Infrastructure Layer)
-│   └── frontend/                    # React + Vite + TypeScript + Tailwind
+│   └── frontend/                         # React + Vite + TypeScript + Tailwind
 │       ├── src/
 │       └── Dockerfile
 ├── infra/

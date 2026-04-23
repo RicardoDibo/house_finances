@@ -1,9 +1,3 @@
-export interface Person {
-  id: string;
-  name: string;
-  age: number;
-}
-
 export interface Category {
   id: string;
   description: string;
@@ -19,12 +13,11 @@ export interface Transaction {
   typeName: string;
   categoryId: string;
   categoryDescription: string;
-  personId: string;
-  personName: string;
-  userId: string | null;
+  userId: string;
+  userName: string;
 }
 
-export interface PersonTotals {
+export interface UserTotals {
   id: string;
   name: string;
   totalIncome: number;
@@ -32,8 +25,8 @@ export interface PersonTotals {
   balance: number;
 }
 
-export interface PersonTotalsSummary {
-  persons: PersonTotals[];
+export interface UserTotalsSummary {
+  users: UserTotals[];
   totalIncome: number;
   totalExpenses: number;
   balance: number;

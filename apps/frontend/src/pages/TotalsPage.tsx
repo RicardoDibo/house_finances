@@ -8,8 +8,8 @@ const balanceClass = (v: number) =>
   v >= 0 ? 'text-green-700 font-semibold' : 'text-red-600 font-semibold';
 
 export default function TotalsPage() {
-  const { personData, categoryData } = useTotals();
-  const [tab, setTab] = useState<'persons' | 'categories'>('persons');
+  const { userData, categoryData } = useTotals();
+  const [tab, setTab] = useState<'users' | 'categories'>('users');
 
   return (
     <div>
@@ -17,12 +17,12 @@ export default function TotalsPage() {
 
       <div className="flex gap-2 mb-6">
         <button
-          onClick={() => setTab('persons')}
+          onClick={() => setTab('users')}
           className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
-            tab === 'persons' ? 'bg-blue-600 text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
+            tab === 'users' ? 'bg-blue-600 text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
           }`}
         >
-          Por Pessoa
+          Por Usuário
         </button>
         <button
           onClick={() => setTab('categories')}
@@ -34,16 +34,16 @@ export default function TotalsPage() {
         </button>
       </div>
 
-      {tab === 'persons' && personData && (
+      {tab === 'users' && userData && (
         <TotalsTable
-          rows={personData.persons.map(p => ({
-            label: p.name,
-            totalIncome: p.totalIncome,
-            totalExpenses: p.totalExpenses,
-            balance: p.balance,
+          rows={userData.users.map(u => ({
+            label: u.name,
+            totalIncome: u.totalIncome,
+            totalExpenses: u.totalExpenses,
+            balance: u.balance,
           }))}
-          summary={{ totalIncome: personData.totalIncome, totalExpenses: personData.totalExpenses, balance: personData.balance }}
-          firstColLabel="Pessoa"
+          summary={{ totalIncome: userData.totalIncome, totalExpenses: userData.totalExpenses, balance: userData.balance }}
+          firstColLabel="Usuário"
         />
       )}
 
@@ -66,7 +66,7 @@ export default function TotalsPage() {
 interface TotalsRow { label: string; totalIncome: number; totalExpenses: number; balance: number; }
 interface TotalsTableProps { rows: TotalsRow[]; summary: { totalIncome: number; totalExpenses: number; balance: number }; firstColLabel: string; }
 
-function TotalsTable({ rows, summary, firstColLabel }: TotalsTableProps) {
+function TotalsTable({ rows, summary, firstColLabel }: Readonly<TotalsTableProps>) {
   if (rows.length === 0) {
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-gray-400 shadow-sm">
@@ -87,8 +87,8 @@ function TotalsTable({ rows, summary, firstColLabel }: TotalsTableProps) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, i) => (
-            <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+          {rows.map(row => (
+            <tr key={row.label} className="border-b border-gray-100 hover:bg-gray-50">
               <td className="px-4 py-3 font-medium text-gray-800">{row.label}</td>
               <td className="px-4 py-3 text-right text-green-700">{formatCurrency(row.totalIncome)}</td>
               <td className="px-4 py-3 text-right text-red-600">{formatCurrency(row.totalExpenses)}</td>

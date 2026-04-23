@@ -14,11 +14,11 @@ public class TotalsController : ControllerBase
 
     public TotalsController(ITotalsService service) => _service = service;
 
-    [HttpGet("persons")]
-    public async Task<IActionResult> GetPersonTotals()
+    [HttpGet("users")]
+    public async Task<IActionResult> GetUserTotals()
     {
         var userId = IsAdmin() ? (Guid?)null : GetCurrentUserId();
-        return Ok(await _service.GetPersonTotalsAsync(userId));
+        return Ok(await _service.GetUserTotalsAsync(userId));
     }
 
     [HttpGet("categories")]

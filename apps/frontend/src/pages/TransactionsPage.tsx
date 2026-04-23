@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { createTransaction } from '../services/api';
-import { usePersons } from '../hooks/usePersons';
 import { useCategories } from '../hooks/useCategories';
 import { useTransactions } from '../hooks/useTransactions';
 
@@ -14,7 +13,6 @@ const emptyForm = {
   amount: '',
   type: '0',
   categoryId: '',
-  personId: '',
 };
 
 const formatCurrency = (v: number) =>
@@ -22,7 +20,6 @@ const formatCurrency = (v: number) =>
 
 export default function TransactionsPage() {
   const { transactions, reload: reloadTransactions } = useTransactions();
-  const { persons } = usePersons();
   const { categories } = useCategories();
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState('');
@@ -43,7 +40,6 @@ export default function TransactionsPage() {
     const amount = Number.parseFloat(form.amount);
     if (!form.description.trim()) return setError('Descrição é obrigatória.');
     if (Number.isNaN(amount) || amount <= 0) return setError('Valor deve ser positivo.');
-    if (!form.personId) return setError('Selecione uma pessoa.');
     if (!form.categoryId) return setError('Selecione uma categoria.');
 
     setLoading(true);
@@ -53,7 +49,6 @@ export default function TransactionsPage() {
         amount,
         type: selectedType,
         categoryId: form.categoryId,
-        personId: form.personId,
       });
       setForm(emptyForm);
       await reloadTransactions();
@@ -70,7 +65,7 @@ export default function TransactionsPage() {
 
       <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6 shadow-sm">
         <h2 className="text-base font-semibold text-gray-700 mb-4">Nova Transação</h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="flex flex-col gap-1 lg:col-span-2">
             <label htmlFor="tx-description" className="text-xs font-medium text-gray-500 uppercase tracking-wide">Descrição</label>
             <input
@@ -124,23 +119,6 @@ export default function TransactionsPage() {
             </select>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="tx-person" className="text-xs font-medium text-gray-500 uppercase tracking-wide">Pessoa</label>
-            <select
-              id="tx-person"
-              className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={form.personId}
-              onChange={e => setForm(f => ({ ...f, personId: e.target.value }))}
-            >
-              <option value="">Selecione...</option>
-              {persons.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.name} ({p.age} anos{p.age < 18 ? ' - menor' : ''})
-                </option>
-              ))}
-            </select>
-          </div>
-
           <div className="flex items-end">
             <button
               type="submit"
@@ -159,7 +137,7 @@ export default function TransactionsPage() {
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
               <th className="text-left px-4 py-3 font-semibold text-gray-600">Descrição</th>
-              <th className="text-left px-4 py-3 font-semibold text-gray-600">Pessoa</th>
+              <th className="text-left px-4 py-3 font-semibold text-gray-600">Usuário</th>
               <th className="text-left px-4 py-3 font-semibold text-gray-600">Categoria</th>
               <th className="text-left px-4 py-3 font-semibold text-gray-600">Tipo</th>
               <th className="text-right px-4 py-3 font-semibold text-gray-600">Valor</th>
@@ -176,7 +154,7 @@ export default function TransactionsPage() {
             {transactions.map(t => (
               <tr key={t.id} className="border-b border-gray-100 hover:bg-gray-50">
                 <td className="px-4 py-3 text-gray-800">{t.description}</td>
-                <td className="px-4 py-3 text-gray-600">{t.personName}</td>
+                <td className="px-4 py-3 text-gray-600">{t.userName}</td>
                 <td className="px-4 py-3 text-gray-600">{t.categoryDescription}</td>
                 <td className="px-4 py-3">
                   <span className={`text-xs font-medium px-2 py-0.5 rounded ${
