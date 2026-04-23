@@ -9,20 +9,20 @@ public class TotalsService : ITotalsService
 
     public TotalsService(ITotalsRepository repository) => _repository = repository;
 
-    public async Task<PersonTotalsSummaryDto> GetPersonTotalsAsync(Guid? userId = null)
+    public async Task<UserTotalsSummaryDto> GetUserTotalsAsync(Guid? userId = null)
     {
-        var persons = await _repository.GetPersonsWithTransactionsAsync(userId);
+        var users = await _repository.GetUsersWithTransactionsAsync(userId);
 
-        var rows = persons.Select(p => new PersonTotalsDto(
-            p.Id,
-            p.Name,
-            TotalIncome: p.Transactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount),
-            TotalExpenses: p.Transactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount),
-            Balance: p.Transactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount)
-                   - p.Transactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount)
+        var rows = users.Select(u => new UserTotalsDto(
+            u.Id,
+            u.Name,
+            TotalIncome: u.Transactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount),
+            TotalExpenses: u.Transactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount),
+            Balance: u.Transactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount)
+                   - u.Transactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount)
         )).ToList();
 
-        return new PersonTotalsSummaryDto(
+        return new UserTotalsSummaryDto(
             rows,
             rows.Sum(r => r.TotalIncome),
             rows.Sum(r => r.TotalExpenses),

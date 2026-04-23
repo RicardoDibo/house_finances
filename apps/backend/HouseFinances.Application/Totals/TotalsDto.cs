@@ -1,14 +1,14 @@
 namespace HouseFinances.Application.Totals;
 
-public record PersonTotalsDto(
+public record UserTotalsDto(
     Guid Id,
     string Name,
     decimal TotalIncome,
     decimal TotalExpenses,
     decimal Balance);
 
-public record PersonTotalsSummaryDto(
-    IReadOnlyList<PersonTotalsDto> Persons,
+public record UserTotalsSummaryDto(
+    IReadOnlyList<UserTotalsDto> Users,
     decimal TotalIncome,
     decimal TotalExpenses,
     decimal Balance);

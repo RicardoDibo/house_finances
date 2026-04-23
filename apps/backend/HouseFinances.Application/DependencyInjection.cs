@@ -1,6 +1,5 @@
 using HouseFinances.Application.Auth;
 using HouseFinances.Application.Categories;
-using HouseFinances.Application.Persons;
 using HouseFinances.Application.Totals;
 using HouseFinances.Application.Transactions;
 using HouseFinances.Application.Users;
@@ -12,7 +11,6 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<IPersonService, PersonService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddScoped<ITotalsService, TotalsService>();
