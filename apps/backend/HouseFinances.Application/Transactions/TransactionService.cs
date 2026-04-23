@@ -8,17 +8,17 @@ namespace HouseFinances.Application.Transactions;
 public class TransactionService : ITransactionService
 {
     private readonly ITransactionRepository _transactions;
-    private readonly IPersonRepository _persons;
     private readonly ICategoryRepository _categories;
+    private readonly IUserRepository _users;
 
     public TransactionService(
         ITransactionRepository transactions,
-        IPersonRepository persons,
-        ICategoryRepository categories)
+        ICategoryRepository categories,
+        IUserRepository users)
     {
         _transactions = transactions;
-        _persons = persons;
         _categories = categories;
+        _users = users;
     }
 
     public async Task<IReadOnlyList<TransactionDto>> GetAllAsync(Guid? userId = null)
@@ -32,13 +32,13 @@ public class TransactionService : ITransactionService
         if (!Enum.IsDefined(typeof(TransactionType), command.Type))
             throw new DomainException("Invalid transaction type. Use 0 (Expense) or 1 (Income).");
 
-        var person = await _persons.GetByIdAsync(command.PersonId)
-            ?? throw new KeyNotFoundException("Person not found.");
+        var user = await _users.GetByIdAsync(command.UserId)
+            ?? throw new KeyNotFoundException("User not found.");
         var category = await _categories.GetByIdAsync(command.CategoryId)
             ?? throw new KeyNotFoundException("Category not found.");
 
         var type = (TransactionType)command.Type;
-        var transaction = Transaction.Create(command.Description, command.Amount, type, person, category, command.UserId);
+        var transaction = Transaction.Create(command.Description, command.Amount, type, user, category);
 
         _transactions.Add(transaction);
         await _transactions.SaveChangesAsync();
@@ -49,6 +49,5 @@ public class TransactionService : ITransactionService
         t.Id, t.Description, t.Amount,
         (int)t.Type, t.Type.ToString(),
         t.CategoryId, t.Category.Description,
-        t.PersonId, t.Person.Name,
-        t.UserId);
+        t.UserId, t.User.Name);
 }

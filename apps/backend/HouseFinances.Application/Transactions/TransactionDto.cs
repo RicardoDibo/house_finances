@@ -8,14 +8,12 @@ public record TransactionDto(
     string TypeName,
     Guid CategoryId,
     string CategoryDescription,
-    Guid PersonId,
-    string PersonName,
-    Guid? UserId);
+    Guid UserId,
+    string UserName);
 
 public record CreateTransactionCommand(
     string Description,
     decimal Amount,
     int Type,
     Guid CategoryId,
-    Guid PersonId,
-    Guid? UserId = null);
+    Guid UserId = default);

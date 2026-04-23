@@ -14,7 +14,7 @@ public class TransactionRepository : ITransactionRepository
     {
         var query = _context.Transactions
             .Include(t => t.Category)
-            .Include(t => t.Person)
+            .Include(t => t.User)
             .AsQueryable();
 
         if (userId.HasValue)

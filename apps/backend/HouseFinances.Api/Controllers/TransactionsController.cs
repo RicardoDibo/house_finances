@@ -24,7 +24,7 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateTransactionCommand command)
     {
-        var userId = GetCurrentUserId();
+        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         return Ok(await _service.CreateAsync(command with { UserId = userId }));
     }
 

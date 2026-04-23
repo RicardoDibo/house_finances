@@ -11,10 +11,8 @@ public class Transaction
     public TransactionType Type { get; protected set; }
     public Guid CategoryId { get; protected set; }
     public Category Category { get; protected set; } = null!;
-    public Guid PersonId { get; protected set; }
-    public Person Person { get; protected set; } = null!;
-    public Guid? UserId { get; protected set; }
-    public User? User { get; protected set; }
+    public Guid UserId { get; protected set; }
+    public User User { get; protected set; } = null!;
 
     protected Transaction() { }
 
@@ -22,9 +20,8 @@ public class Transaction
         string description,
         decimal amount,
         TransactionType type,
-        Person person,
-        Category category,
-        Guid? userId = null)
+        User user,
+        Category category)
     {
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("Description is required.");
@@ -32,9 +29,6 @@ public class Transaction
             throw new DomainException("Description must be at most 400 characters.");
         if (amount <= 0)
             throw new DomainException("Amount must be a positive value.");
-
-        if (person.IsMinor && type == TransactionType.Income)
-            throw new DomainException("Minors (under 18) can only register expense transactions.");
 
         if (!category.IsCompatibleWith(type))
             throw new DomainException(
@@ -46,11 +40,10 @@ public class Transaction
             Description = description.Trim(),
             Amount = amount,
             Type = type,
-            PersonId = person.Id,
-            Person = person,
+            UserId = user.Id,
+            User = user,
             CategoryId = category.Id,
             Category = category,
-            UserId = userId
         };
     }
 }
